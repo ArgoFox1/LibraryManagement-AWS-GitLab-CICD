@@ -4,4 +4,3 @@
 
 *default username email:kullanici@kutuphane.com password:test123*
 
-gitlab test 
