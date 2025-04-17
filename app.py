@@ -360,4 +360,4 @@ if __name__ == '__main__':
             db.session.add_all(kitap_kategoriler)
             db.session.commit()
     
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
