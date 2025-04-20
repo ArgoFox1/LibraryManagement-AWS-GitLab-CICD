@@ -77,6 +77,12 @@ def register():
         flash('Kayıt başarılı. Giriş yapabilirsiniz.', 'success')
         return redirect(url_for('login'))
     return render_template('auth/register.html')
+    
+@app.route("/all-books", methods=["GET"])
+@login_required
+def all_books():
+    books = Book.query.all()
+    return render_template("user/all_books.html", books=books)
 
 @app.route('/admin/register', methods=['GET', 'POST'])
 def admin_register():
