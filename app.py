@@ -136,20 +136,29 @@ def add_book():
 
     title = request.form['title']
     isbn = request.form['isbn']
-    author_id = request.form['author_id']
+    author_name = request.form['author_name']
     publication_year = request.form.get('publication_year')
     page_count = request.form.get('page_count')
     shelf_number = request.form.get('shelf_number')
 
+    # Yazar var mı kontrol et, yoksa oluştur
+    author = Author.query.filter_by(name=author_name).first()
+    if not author:
+        author = Author(name=author_name)
+        db.session.add(author)
+        db.session.commit()  # Yeni yazarı kaydet
+
+    # Kitabı oluştur
+    new_book = Book(
+        title=title,
+        isbn=isbn,
+        author_id=author.id,
+        publication_year=int(publication_year) if publication_year else None,
+        page_count=int(page_count) if page_count else None,
+        shelf_number=shelf_number
+    )
+
     try:
-        new_book = Book(
-            title=title,
-            isbn=isbn,
-            author_id=author_id,
-            publication_year=int(publication_year) if publication_year else None,
-            page_count=int(page_count) if page_count else None,
-            shelf_number=shelf_number
-        )
         db.session.add(new_book)
         db.session.commit()
         flash('Kitap başarıyla eklendi', 'success')
@@ -158,6 +167,7 @@ def add_book():
         flash(f'Bir hata oluştu: {str(e)}', 'danger')
 
     return redirect(url_for('admin_books'))
+
 
 
 @app.route('/admin/books/<int:id>/edit', methods=['GET', 'POST'])
