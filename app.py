@@ -119,7 +119,7 @@ def dashboard():
     return render_template('user/dashboard.html')
 
 # Admin Routes
-@app.route('/admin/books')
+@app.route("/admin/books", methods=["GET", "POST"])
 @login_required
 def admin_books():
     if not is_admin():
@@ -133,27 +133,32 @@ def admin_books():
 def add_book():
     if not is_admin():
         abort(403)
-    
+
     title = request.form['title']
     isbn = request.form['isbn']
     author_id = request.form['author_id']
     publication_year = request.form.get('publication_year')
     page_count = request.form.get('page_count')
     shelf_number = request.form.get('shelf_number')
-    
-    new_book = Book(
-        title=title,
-        isbn=isbn,
-        author_id=author_id,
-        publication_year=int(publication_year) if publication_year else None,
-        page_count=int(page_count) if page_count else None,
-        shelf_number=shelf_number
-    )
-    
-    db.session.add(new_book)
-    db.session.commit()
-    flash('Kitap başarıyla eklendi', 'success')
+
+    try:
+        new_book = Book(
+            title=title,
+            isbn=isbn,
+            author_id=author_id,
+            publication_year=int(publication_year) if publication_year else None,
+            page_count=int(page_count) if page_count else None,
+            shelf_number=shelf_number
+        )
+        db.session.add(new_book)
+        db.session.commit()
+        flash('Kitap başarıyla eklendi', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Bir hata oluştu: {str(e)}', 'danger')
+
     return redirect(url_for('admin_books'))
+
 
 @app.route('/admin/books/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -178,17 +183,20 @@ def edit_book(id):
     authors = Author.query.all()
     return render_template('admin/edit_book.html', book=book, authors=authors)
 
-@app.route('/admin/books/<int:id>/delete', methods=['POST'])
+@app.route("/admin/books/<int:book_id>/delete", methods=["POST"])
 @login_required
-def delete_book(id):
-    if not is_admin():
-        abort(403)
-    
-    book = Book.query.get_or_404(id)
+def delete_book(book_id):
+    book = Book.query.get_or_404(book_id)
+
+    # Kitapla ilişkili kategori bağlantılarını sil
+    for category in book.categories:
+        db.session.delete(category)
+
     db.session.delete(book)
     db.session.commit()
-    flash('Kitap başarıyla silindi', 'success')
-    return redirect(url_for('admin_books'))
+
+    flash("Kitap silindi.", "success")
+    return redirect(url_for("admin_books"))
 
 @app.route('/admin/users')
 @login_required
