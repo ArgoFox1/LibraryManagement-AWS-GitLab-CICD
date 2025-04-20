@@ -4,6 +4,7 @@
 <div class="search-container">
     <h1>Kitap Ara</h1>
     
+    <!-- Arama Formu -->
     <form method="POST" action="{{ url_for('search_books') }}">
         <div class="form-group">
             <input type="text" name="query" placeholder="Arama yap..." required>
@@ -19,9 +20,14 @@
         
         <button type="submit" class="btn">Ara</button>
     </form>
+
+    <!-- Tüm Kitapları Göster Butonu -->
+    <form method="GET" action="{{ url_for('all_books') }}" style="margin-top: 10px;">
+        <button type="submit" class="btn btn-secondary">Tüm Kitapları Göster</button>
+    </form>
     
     {% if books %}
-    <div class="results">
+    <div class="results" style="margin-top: 20px;">
         <h2>Arama Sonuçları</h2>
         
         <table>
