@@ -229,14 +229,19 @@ def delete_user(id):
         abort(403)
     
     user = User.query.get_or_404(id)
+
     if user == current_user:
         flash('Kendi hesabınızı silemezsiniz', 'danger')
         return redirect(url_for('admin_users'))
-    
+
+    # Kullanıcıya ait tüm loan kayıtlarını sil
+    Loan.query.filter_by(user_id=user.id).delete()
+
     db.session.delete(user)
     db.session.commit()
     flash('Kullanıcı başarıyla silindi', 'success')
     return redirect(url_for('admin_users'))
+
 
 # User Routes
 @app.route('/user/search', methods=['GET', 'POST'])
