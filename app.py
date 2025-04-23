@@ -181,21 +181,32 @@ def add_book():
 def edit_book(id):
     if not is_admin():
         abort(403)
-    
+
     book = Book.query.get_or_404(id)
-    
+
     if request.method == 'POST':
         book.title = request.form['title']
         book.isbn = request.form['isbn']
-        book.author_id = request.form['author_id']
         book.publication_year = request.form.get('publication_year')
         book.page_count = request.form.get('page_count')
         book.shelf_number = request.form.get('shelf_number')
-        
+
+        # Yeni: Formdan gelen yazar adı
+        author_name = request.form['author'].strip()
+
+        # Aynı isimde yazar var mı kontrol et
+        author = Author.query.filter_by(name=author_name).first()
+        if not author:
+            author = Author(name=author_name)
+            db.session.add(author)
+            db.session.commit()
+
+        book.author_id = author.id
+
         db.session.commit()
         flash('Kitap başarıyla güncellendi', 'success')
         return redirect(url_for('admin_books'))
-    
+
     authors = Author.query.all()
     return render_template('admin/edit_book.html', book=book, authors=authors)
 
