@@ -1,4 +1,5 @@
 # LibraryManagementSystem(AWS-GitlabCICD-Github Webhook)
+This project is a web-based library management system developed using the Flask framework. It is designed to be containerized with Docker and automated  GitLab CI/CD pipelines.
 
 * Default admin email:admin@kutuphane.com password:admin123
 * Default user email:kullanici@kutuphane.com password:test123
@@ -64,3 +65,7 @@
    publicip:5000
    ```
 * In server footages
+
+![chrome-capture-2025-4-28 (1)](https://github.com/user-attachments/assets/1113091d-0275-4c40-ba4f-4c54a350e035)
+
+![chrome-capture-2025-4-29](https://github.com/user-attachments/assets/95d46732-097d-4d69-8d79-0b2685e50cfe)
