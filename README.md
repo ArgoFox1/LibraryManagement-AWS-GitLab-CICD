@@ -1,6 +1,21 @@
-# LibraryManagementSystem(AWS-GitlabCICD-Github Webhook)
-This project is a web-based library management system developed using the Flask framework. It is designed to be containerized with Docker and automated  GitLab CI/CD pipelines.
+# LibraryManagementSystem(AWS-GitlabCICD-Github Webhook) Setup Guide 
+This project is a web-based library management system developed using the Flask framework. It is designed to be containerized with Docker and automated through GitLab CI/CD pipelines.
+Additionally, the project is connected to GitLab via GitHub webhooks. Whenever new changes are pushed to the GitHub repository, the webhook triggers GitLab, which then executes the .gitlab-ci.yml pipeline.
 
+As part of the deployment process:
+
+The updated project is automatically transferred to an AWS EC2 instance.
+A new Docker image is built on the server.
+An updated Docker container is created and deployed automatically, ensuring the application is always up-to-date.
+
+* Backend: Python (Flask)
+* Frontend: HTML5, CSS3, JavaScript
+* Database: SQLite
+* Containerization: Docker
+* CI/CD: GitLab CI (triggered via GitHub Webhooks)
+* Deployment: AWS EC2
+* Version Control: Git (GitHub)
+  
 * Default admin email:admin@kutuphane.com password:admin123
 * Default user email:kullanici@kutuphane.com password:test123
 * Default admin register code : ADMIN123
