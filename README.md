@@ -79,7 +79,7 @@ An updated Docker container is created and deployed automatically, ensuring the 
    ```shell
    publicip:5000
    ```
-* In server footages
+* In website footages
 
 ![chrome-capture-2025-4-28 (1)](https://github.com/user-attachments/assets/1113091d-0275-4c40-ba4f-4c54a350e035)
 
